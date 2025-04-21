@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Movie</title>
+</head>
+<body>
+<h1>Add Movie</h1>
+<form id="movieForm">
+    <label>Title: <input type="text" id="title" required></label><br>
+    <label>Genre:
+        <select id="genre">
+            <option value="ACTION">Action</option>
+            <option value="DRAMA">Drama</option>
+            <option value="COMEDY">Comedy</option>
+            <option value="THRILLER">Thriller</option>
+            <option value="Romance">Romance</option>
+        </select>
+    </label><br>
+    <button type="submit">Add Movie</button>
+</form>
+<p id="message"></p>
+
+<script>
+    document.getElementById('movieForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        fetch('http://localhost:9090/admin/movie/add', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                title: document.getElementById('title').value,
+                genre: document.getElementById('genre').value
+            })
+        })
+        .then(response => response.json())
+        .then(data => document.getElementById('message').textContent = "Movie added: " + data.title)
+        .catch(error => document.getElementById('message').textContent = "Error adding movie");
+    });
+</script>
+</body>
+</html>

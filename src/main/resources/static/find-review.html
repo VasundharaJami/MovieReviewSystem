@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Review</title>
+</head>
+<body>
+<h1>Find Review</h1>
+<form id="searchReviewForm">
+    <label>Review ID: <input type="number" id="reviewId" required></label>
+    <button type="submit">Find</button>
+</form>
+<p id="result"></p>
+
+<script>
+    document.getElementById('searchReviewForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        fetch('http://localhost:9090/review/find?reviewId=' + document.getElementById('reviewId').value)
+        .then(response => response.json())
+        .then(data => {
+            if (data) {
+                document.getElementById('result').innerHTML = `Review: ${data.review} <br> Rating: ${data.rating}`;
+            } else {
+                document.getElementById('result').textContent = "Review not found";
+            }
+        })
+        .catch(error => document.getElementById('result').textContent = "Error finding review");
+    });
+</script>
+</body>
+</html>

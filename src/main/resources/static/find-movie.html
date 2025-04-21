@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Movie</title>
+</head>
+<body>
+<h1>Find Movie</h1>
+<form id="searchForm">
+    <label>Title: <input type="text" id="searchTitle" required></label>
+    <button type="submit">Find</button>
+</form>
+<p id="result"></p>
+
+<script>
+    document.getElementById('searchForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        fetch('http://localhost:9090/movie/title?title=' + document.getElementById('searchTitle').value)
+        .then(response => response.json())
+        .then(data => {
+            if (data) {
+                document.getElementById('result').innerHTML = `Title: ${data.title} <br> Genre: ${data.genre} <br> Rating: ${data.rating}`;
+            } else {
+                document.getElementById('result').textContent = "Movie not found";
+            }
+        })
+        .catch(error => document.getElementById('result').textContent = "Error finding movie");
+    });
+</script>
+</body>
+</html>
